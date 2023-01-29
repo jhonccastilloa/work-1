@@ -1,23 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
-import { RequestExt} from '../interfaces/types';
+import { RequestExt } from '../interfaces/types';
+import RepairModel from '../models/repair.models';
 import UserModel from '../models/user.models';
 
-const validUserById = async (
+const validRepairById = async (
   req: RequestExt,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { id } = req.params;
-    const user = await UserModel.findOne({
+    const repair = await RepairModel.findOne({
       where: {
         id,
         status: 'available',
       },
     });
-    if (!user)
-      return res.status(404).json({ error: true, message: 'User not found' });
-    req.user = user;
+    if (!repair)
+      return res.status(404).json({ error: true, message: 'Repair not found' });
+    req.repair = repair;
     next();
   } catch (err) {
     console.log(err);
@@ -28,4 +29,4 @@ const validUserById = async (
   }
 };
 
-export default validUserById;
+export default validRepairById;

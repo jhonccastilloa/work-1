@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { RequestExt } from '../interfaces/types';
 import UserModel from '../models/user.models';
 
 const findUsers = async (req: Request, res: Response) => {
@@ -55,15 +56,26 @@ const createUser = async (req: Request, res: Response) => {
     res.status(500).json({ status: 'error', message: 'internal server error' });
   }
 };
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: RequestExt, res: Response) => {
   try {
+    const { user } = req;
+    const { name, email } = req.body;
+    const newUser = await user?.update({ name, email });
+    res.json({
+      status: 'succes',
+      message: 'the user was edited succesfully',
+      newUser,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'internal server error' });
   }
 };
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: RequestExt, res: Response) => {
   try {
+    const { user } = req;
+    await user?.update({ status: 'unavailable' });
+    res.json({ status: 'success', message: 'User was deleted successfully' });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'internal server error' });

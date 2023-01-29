@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/db';
-import {  UserModel } from '../interfaces/types';
+import {  UserModelProps } from '../interfaces/types';
 
-const UserModel = db.define<UserModel>('users', {
+const UserModel = db.define<UserModelProps>('users', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,

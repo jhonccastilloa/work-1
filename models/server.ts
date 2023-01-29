@@ -23,6 +23,7 @@ class Server {
   }
   routes() {
     this.app.use(this.path.users, userRouter);
+    this.app.use(this.path.repairs, userRouter);
   }
   database() {
     db.authenticate()

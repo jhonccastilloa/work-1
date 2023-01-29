@@ -1,15 +1,16 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/db';
+import { RepairModelProps } from '../interfaces/types';
 
 console.log('hola');
-const Repair = db.define('repairs', {
+const RepairModel = db.define<RepairModelProps>('repairs', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
   },
-  data: {
+  date: {
     type: DataTypes.DATE,
     allowNull: false,
   },
@@ -19,10 +20,10 @@ const Repair = db.define('repairs', {
   },
 
   status: {
-    type: DataTypes.ENUM('available', 'unavailable'),
+    type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
     allowNull: false,
-    defaultValue:'available'
+    defaultValue: 'available',
   },
 });
 
-export default Repair
+export default RepairModel;
