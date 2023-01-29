@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import db from '../database/db';
 import userRouter from '../routes/users.routes';
+import repairRouter from '../routes/repairs.routes'
 
 class Server {
   private app: Application;
@@ -23,7 +24,7 @@ class Server {
   }
   routes() {
     this.app.use(this.path.users, userRouter);
-    this.app.use(this.path.repairs, userRouter);
+    this.app.use(this.path.repairs, repairRouter);
   }
   database() {
     db.authenticate()
