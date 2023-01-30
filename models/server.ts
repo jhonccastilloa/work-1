@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import db from '../database/db';
 import userRouter from '../routes/users.routes';
-import repairRouter from '../routes/repairs.routes'
+import repairRouter from '../routes/repairs.routes';
 
 class Server {
   private app: Application;
@@ -14,7 +14,7 @@ class Server {
   constructor() {
     this.app = express();
     this.middlewares();
-    this.routes()
+    this.routes();
     this.database();
   }
 

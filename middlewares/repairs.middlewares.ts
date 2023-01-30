@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { Op } from 'sequelize';
 import { RequestExt } from '../interfaces/types';
 import RepairModel from '../models/repair.models';
 import UserModel from '../models/user.models';
@@ -13,9 +14,10 @@ const validRepairById = async (
     const repair = await RepairModel.findOne({
       where: {
         id,
-        status: 'available',
+        status: 'pending',
       },
     });
+    console.log(repair)
     if (!repair)
       return res.status(404).json({ error: true, message: 'Repair not found' });
     req.repair = repair;

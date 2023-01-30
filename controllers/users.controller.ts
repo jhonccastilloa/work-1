@@ -40,6 +40,14 @@ const findUser = async (req: Request, res: Response) => {
 const createUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password, role } = req.body;
+    const existEmail = await UserModel.findOne({
+      where: {
+        email
+      },
+    });
+    console.log(existEmail)
+    if (existEmail)
+      return res.status(404).json({ error: "error", message: 'this email was created' });
     const newUser = await UserModel.create({
       name,
       email,

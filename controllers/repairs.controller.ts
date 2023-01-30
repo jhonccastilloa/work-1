@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Op } from 'sequelize';
 import { RequestExt } from '../interfaces/types';
 import RepairModel from '../models/repair.models';
 
@@ -15,18 +16,13 @@ const findRepairs = async (req: Request, res: Response) => {
     });
   } catch (err) {
     console.log(err);
+    console.log('err');
     res.status(500).json({ message: 'internal server error' });
   }
 };
-const findRepair = async (req: Request, res: Response) => {
+const findRepair = async (req: RequestExt, res: Response) => {
   try {
-    const { id } = req.params;
-    const repair = await RepairModel.findOne({
-      where: {
-        id,
-        status: 'pending',
-      },
-    });
+    const { repair } = req;
     res.json({
       status: 'success',
       message: 'repair found succesfully',
@@ -39,6 +35,7 @@ const findRepair = async (req: Request, res: Response) => {
 };
 const createRepair = async (req: Request, res: Response) => {
   try {
+    
     const { date, userId } = req.body;
     const newRepair = await RepairModel.create({
       date,
@@ -46,7 +43,7 @@ const createRepair = async (req: Request, res: Response) => {
     });
     res.json({
       status: 'success',
-      message: 'the user was created succesfully',
+      message: 'the repair was created succesfully',
       newRepair,
     });
   } catch (err) {
@@ -54,14 +51,14 @@ const createRepair = async (req: Request, res: Response) => {
     res.status(500).json({ status: 'error', message: 'internal server error' });
   }
 };
-const updateRepair= async (req: RequestExt, res: Response) => {
+const updateRepair = async (req: RequestExt, res: Response) => {
   try {
     const { repair } = req;
     const { status } = req.body;
     const newRepair = await repair?.update({ status });
     res.json({
       status: 'succes',
-      message: 'the user was edited succesfully',
+      message: 'the repair was edited succesfully',
       newRepair,
     });
   } catch (err) {
@@ -72,6 +69,12 @@ const updateRepair= async (req: RequestExt, res: Response) => {
 const deleteRepair = async (req: RequestExt, res: Response) => {
   try {
     const { repair } = req;
+
+    if (repair?.status == 'completed')
+      return res.json({
+        status: 'error',
+        message: 'This repair was completate',
+      });
     await repair?.update({ status: 'cancelled' });
     res.json({ status: 'success', message: 'Repair was deleted successfully' });
   } catch (err) {
@@ -80,4 +83,4 @@ const deleteRepair = async (req: RequestExt, res: Response) => {
   }
 };
 
-export {findRepair,findRepairs,deleteRepair,updateRepair,createRepair}
+export { findRepair, findRepairs, deleteRepair, updateRepair, createRepair };

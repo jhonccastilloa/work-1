@@ -11,7 +11,7 @@ const RepairModel = db.define<RepairModelProps>('repairs', {
     primaryKey: true,
   },
   date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
   },
   userId: {
@@ -22,7 +22,7 @@ const RepairModel = db.define<RepairModelProps>('repairs', {
   status: {
     type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
     allowNull: false,
-    defaultValue: 'available',
+    defaultValue: 'pending',
   },
 });
 
