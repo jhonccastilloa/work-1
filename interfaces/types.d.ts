@@ -10,7 +10,6 @@ type Role = 'client' | 'employee';
 type UserStatus = 'available' | 'unavailable';
 type RepairStatus = 'pending' | 'completed' | 'cancelled';
 
-
 export interface UserModelProps
   extends Model<
     InferAttributes<UserModelProps>,
@@ -31,11 +30,11 @@ export interface RepairModelProps
   id: CreationOptional<Number>;
   date: Date;
   userId: Number;
+  motorsNumber: Number;
+  description: String;
   status: CreationOptional<RepairStatus>;
 }
 export interface RequestExt extends Request {
   user?: UserModelProps;
   repair?: RepairModelProps;
 }
-
-

@@ -14,6 +14,14 @@ const RepairModel = db.define<RepairModelProps>('repairs', {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  motorsNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

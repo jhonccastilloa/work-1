@@ -1,15 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { Op } from 'sequelize';
 import { RequestExt } from '../interfaces/types';
 import RepairModel from '../models/repair.models';
-import UserModel from '../models/user.models';
+import AppError from '../utils/appError';
+import catchAsync from '../utils/catchAsync';
 
-const validRepairById = async (
-  req: RequestExt,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+const validRepairById = catchAsync(
+  async (req: RequestExt, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const repair = await RepairModel.findOne({
       where: {
@@ -17,18 +13,25 @@ const validRepairById = async (
         status: 'pending',
       },
     });
-    console.log(repair)
-    if (!repair)
-      return res.status(404).json({ error: true, message: 'Repair not found' });
+    if (!repair) return next(new AppError('Repair not found', 404));
     req.repair = repair;
     next();
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      status: 'error',
-      message: 'internal server error',
-    });
   }
-};
+);
 
-export default validRepairById;
+const validRepairCompleted = catchAsync(
+  async (req: RequestExt, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const repair = await RepairModel.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!repair) return next(new AppError('Repair not found', 404));
+    if (repair?.status == 'completed')
+      return next(new AppError('This repair was completate', 404));
+    req.repair = repair;
+    next();
+  }
+);
+export { validRepairById, validRepairCompleted };
