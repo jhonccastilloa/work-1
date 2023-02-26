@@ -2,10 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { RequestExt } from '../interfaces/types';
 import UserModel from '../models/user.models';
 import AppError from '../utils/appError';
-import { encrypt } from '../utils/bcryptPassword';
+import { compareEncrypt, encrypt } from '../utils/bcryptPassword';
 import catchAsync from '../utils/catchAsync';
+import { tokenSign } from '../utils/jwt';
 
-const findUsers = catchAsync(async (req: Request, res: Response) => {
+const findUsers = catchAsync(async (req: RequestExt, res: Response) => {
+  
   const users = await UserModel.findAll({
     where: {
       status: 'available',
@@ -68,5 +70,23 @@ const deleteUser = catchAsync(async (req: RequestExt, res: Response) => {
   await user?.update({ status: 'unavailable' });
   res.json({ status: 'success', message: 'User was deleted successfully' });
 });
+const loginUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
 
-export { findUser, findUsers, deleteUser, createUser, updateUser };
+    const user = await UserModel.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!user) return next(new AppError('this account not exist', 404));
+
+    const checkPassword = await compareEncrypt(password, user.password);
+    if (!checkPassword)
+      return next(new AppError('Incorrect email or password', 401));
+    const token = tokenSign(user.id);
+    res.json({ status: 'success', token, user });
+  }
+);
+
+export { findUser, findUsers, deleteUser, createUser, updateUser, loginUser };

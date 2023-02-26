@@ -9,6 +9,7 @@ const DB_DIALECT = process.env.DB_DIALECT as Dialect;
 const db = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
   host: DB_HOST,
   dialect: DB_DIALECT,
+  logging: false,
 });
 
 export default db;

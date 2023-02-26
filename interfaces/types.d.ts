@@ -15,10 +15,10 @@ export interface UserModelProps
     InferAttributes<UserModelProps>,
     InferCreationAttributes<UserModelProps>
   > {
-  id: CreationOptional<Number>;
-  name: String;
-  email: String;
-  password: String;
+  id: CreationOptional<number>;
+  name: string;
+  email: string;
+  password: string;
   role: Role;
   status: CreationOptional<UserStatus>;
 }
@@ -27,14 +27,19 @@ export interface RepairModelProps
     InferAttributes<repairModelProps>,
     InferCreationAttributes<repairModelProps>
   > {
-  id: CreationOptional<Number>;
+  id: CreationOptional<number>;
   date: Date;
-  userId: Number;
-  motorsNumber: Number;
-  description: String;
+  userId: number;
+  motorsNumber: number;
+  description: string;
   status: CreationOptional<RepairStatus>;
 }
 export interface RequestExt extends Request {
-  user?: UserModelProps;
-  repair?: RepairModelProps;
+  user: UserModelProps;
+  repair: RepairModelProps;
+  sessionIdUser: number;
+}
+
+export interface JwtPayload {
+  id: number;
 }
