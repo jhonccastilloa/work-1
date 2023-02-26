@@ -19,4 +19,16 @@ const validUserById = catchAsync(
   }
 );
 
-export default validUserById;
+const validRepeatEmail = catchAsync(
+  async (req: RequestExt, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    const existEmail = await UserModel.findOne({
+      where: {
+        email,
+      },
+    });
+    if (existEmail) return next(new AppError('this email already exists', 404));
+    next();
+  }
+);
+export { validUserById, validRepeatEmail };

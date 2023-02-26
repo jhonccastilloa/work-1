@@ -37,7 +37,7 @@ export interface RepairModelProps
 export interface RequestExt extends Request {
   user: UserModelProps;
   repair: RepairModelProps;
-  sessionIdUser: number;
+  sessionUser: UserModelProps;
 }
 
 export interface JwtPayload {

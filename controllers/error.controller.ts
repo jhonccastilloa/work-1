@@ -6,7 +6,9 @@ const globalErrorHandler = (err:AppError, req:Request, res:Response, next:NextFu
   err.message = err.message || 'fail';
   res.status(err.statusCode).json({
     status: err.status,
+    error: err,
     message: err.message,
+   
   });
 };
 

@@ -3,7 +3,6 @@ import { JwtPayload } from '../interfaces/types';
 
 const JWT_SECRET: Secret = process.env.JWT_SECRET || 'helloWorld';
 const tokenSign = (id: number) => {
-  console.log(JWT_SECRET);
   const sign = jsonwebtoken.sign(
     {
       id,
@@ -17,12 +16,8 @@ const tokenSign = (id: number) => {
   return sign;
 };
 const verifyToken = (tokenJwt: string) => {
-  try {
-    const tokenVerify = jsonwebtoken.verify(tokenJwt, JWT_SECRET) as JwtPayload;
-    return tokenVerify;
-  } catch (error) {
-    return { id: null };
-  }
+  const tokenVerify = jsonwebtoken.verify(tokenJwt, JWT_SECRET) as JwtPayload;
+  return tokenVerify;
 };
 
 export { verifyToken, tokenSign };
