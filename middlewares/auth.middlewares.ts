@@ -1,5 +1,9 @@
-import { NextFunction, Response } from 'express';
-import { RequestExt, UserModelProps } from '../interfaces/types';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+import {
+  RequestExt,
+  RequestHandlerExt,
+  UserModelProps,
+} from '../interfaces/types';
 import UserModel from '../models/user.models';
 import AppError from '../utils/appError';
 import catchAsync from '../utils/catchAsync';
@@ -30,7 +34,7 @@ const protect = catchAsync(
 );
 
 const checkRol =
-  (roles: string[]): any =>
+  (roles: string[]): RequestHandlerExt =>
   (req: RequestExt, res: Response, next: NextFunction) => {
     const { role } = req.sessionUser;
     if (!roles.includes(role)) {

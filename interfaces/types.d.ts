@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import {
   Model,
   CreationOptional,
@@ -43,3 +43,5 @@ export interface RequestExt extends Request {
 export interface JwtPayload {
   id: number;
 }
+
+export type RequestHandlerExt=(req: RequestExt, res: Response, next: NextFunction) => void

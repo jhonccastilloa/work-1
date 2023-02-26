@@ -28,7 +28,7 @@ const validRepairCompleted = catchAsync(
       },
     });
     if (!repair) return next(new AppError('Repair not found', 404));
-    if (repair?.status == 'completed')
+    if (repair?.status === 'completed')
       return next(new AppError('This repair was completate', 404));
     req.repair = repair;
     next();
