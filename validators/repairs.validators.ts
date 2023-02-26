@@ -2,15 +2,15 @@ import { body } from 'express-validator';
 import validateField from '../middlewares/validateField.middlewares';
 
 const validateRepairCreate = [
-  body('date', 'Asegurase de tener una fecha correcto')
+  body('date', 'Make sure you have a correct date')
     .exists()
     .notEmpty()
     .isDate(),
-  body('motorsNumber', 'Asegurase de tener un numero de moto correcto')
+  body('motorsNumber', 'Make sure you have a correct motorcycle number')
     .exists()
     .notEmpty()
     .isNumeric(),
-  body('description', 'Asegurase de tener una descripcion correcta')
+  body('description', 'Make sure you have a correct description')
     .exists()
     .notEmpty(),
   validateField,

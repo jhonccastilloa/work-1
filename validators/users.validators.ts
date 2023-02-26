@@ -2,12 +2,12 @@ import { body } from 'express-validator';
 import validateField from '../middlewares/validateField.middlewares';
 
 const validateUserCreate = [
-  body('name', 'Asegurase de tener un nombre correcto').exists().notEmpty(),
-  body('email', 'Asegurase de tener un email correcto')
+  body('name', 'Make sure you have a correct name').exists().notEmpty(),
+  body('email', 'Make sure you have a correct email')
     .exists()
     .notEmpty()
     .isEmail(),
-  body('password', 'Asegurase de tener una contraseña correcta')
+  body('password', 'Make sure you have a correct password')
     .exists()
     .notEmpty(),
   validateField,

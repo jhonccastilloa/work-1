@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { RequestExt } from '../interfaces/types';
 import RepairModel from '../models/repair.models';
 import AppError from '../utils/appError';
