@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { RequestExt } from '../interfaces/types';
 import UserModel from '../models/user.models';
 import AppError from '../utils/appError';
+import { encrypt } from '../utils/bcryptPassword';
 import catchAsync from '../utils/catchAsync';
 
 const findUsers = catchAsync(async (req: Request, res: Response) => {
@@ -29,26 +30,29 @@ const findUser = catchAsync(async (req: Request, res: Response) => {
     user,
   });
 });
-const createUser = catchAsync(async (req: Request, res: Response,next:NextFunction) => {
-  const { name, email, password, role } = req.body;
-  const existEmail = await UserModel.findOne({
-    where: {
+const createUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { name, email, password, role } = req.body;
+    const existEmail = await UserModel.findOne({
+      where: {
+        email,
+      },
+    });
+    if (existEmail) return next(new AppError('this email was created', 404));
+    const passwordEncrypt = await encrypt(password);
+    const newUser = await UserModel.create({
+      name,
       email,
-    },
-  });
-  if (existEmail) return next(new AppError('this email was created', 404));
-  const newUser = await UserModel.create({
-    name,
-    email,
-    password,
-    role,
-  });
-  res.json({
-    status: 'succes',
-    message: 'the user was created succesfully',
-    newUser,
-  });
-});
+      password: passwordEncrypt,
+      role,
+    });
+    res.json({
+      status: 'succes',
+      message: 'the user was created succesfully',
+      newUser,
+    });
+  }
+);
 const updateUser = catchAsync(async (req: RequestExt, res: Response) => {
   const { user } = req;
   const { name, email } = req.body;
