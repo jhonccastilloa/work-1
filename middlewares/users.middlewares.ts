@@ -20,7 +20,7 @@ const validUserById = catchAsync(
 );
 
 const validRepeatEmail = catchAsync(
-  async (req: RequestExt, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;
     const existEmail = await UserModel.findOne({
       where: {

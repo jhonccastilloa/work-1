@@ -12,6 +12,7 @@ import { verifyToken } from '../utils/jwt';
 const protect = catchAsync(
   async (req: RequestExt, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
+
     if (!authorization || !authorization.startsWith('Bearer'))
       return next(
         new AppError('You are not logged in!  please log in to get acess', 401)
@@ -34,7 +35,7 @@ const protect = catchAsync(
 );
 
 const checkRol =
-  (roles: string[]): RequestHandlerExt =>
+  (roles: string[]): any =>
   (req: RequestExt, res: Response, next: NextFunction) => {
     const { role } = req.sessionUser;
     if (!roles.includes(role)) {
